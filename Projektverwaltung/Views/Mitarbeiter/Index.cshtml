@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Projektverwaltung.Database.Mitarbeiter>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Mitarbeiter</h2>
+
+<p>
+    @Html.ActionLink("Mitarbeiter Hinzufügen", "Create")
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.vorname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.abteilung)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.pensum)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.vorname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.abteilung)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.pensum)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

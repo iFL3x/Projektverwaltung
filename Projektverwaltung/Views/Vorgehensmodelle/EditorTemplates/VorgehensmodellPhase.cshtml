@@ -1,0 +1,20 @@
+﻿@model Projektverwaltung.Database.VorgehensmodellPhase
+
+
+<div class="phase">
+    @Html.HiddenFor(phase => phase.id)
+    <div class="form-group">
+        @Html.LabelFor(phase => phase.name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(phase => phase.name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(phase => phase.name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(phase => phase.beschreibung, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(phase => phase.beschreibung, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(phase => phase.beschreibung, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>

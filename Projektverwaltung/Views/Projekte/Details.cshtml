@@ -1,0 +1,115 @@
+﻿@model Projektverwaltung.Database.Projekt
+
+@{
+    ViewBag.Title = "Details";
+    var statusList = ViewBag.StatusList as SelectList;
+    var prioList = ViewBag.PrioList as SelectList;
+}
+
+<h2>Projektdetails</h2>
+
+<div>
+    <h4>Projekt - @Model.id</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.beschreibung)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.beschreibung)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.status)
+        </dt>
+
+        <dd>
+           @statusList.Where(s => s.Value == Model.status.ToString()).FirstOrDefault().Text
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.prioritaet)
+        </dt>
+
+        <dd>
+            @prioList.Where(s => s.Value == Model.prioritaet.ToString()).FirstOrDefault().Text
+        </dd>
+
+        <dt>
+            Projektleiter
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Mitarbeiter.name)
+        </dd>
+
+        <dt>
+            Vorgehensmodell
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Vorgehensmodell.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.startdatum_geplant)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.startdatum_geplant)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.enddatum_geplant)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.enddatum_geplant)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.startdatum_effektiv)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.startdatum_effektiv)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.enddatum_effektiv)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.enddatum_effektiv)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fortschritt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fortschritt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dokument_link)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dokument_link)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Zurück", "Index")
+</p>

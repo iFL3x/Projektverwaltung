@@ -1,0 +1,61 @@
+﻿@model Projektverwaltung.Database.Vorgehensmodell
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Vorgehensmodell</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.status)
+        </dd>
+
+    </dl>
+</div>
+<br />
+<h4>Phasen</h4>
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Beschreibung
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var phase in Model.VorgehensmodellPhase)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(item => phase.name)
+            </td>
+            <td>
+                @Html.DisplayFor(item => phase.beschreibung)
+            </td>
+        </tr>
+    }
+
+</table>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

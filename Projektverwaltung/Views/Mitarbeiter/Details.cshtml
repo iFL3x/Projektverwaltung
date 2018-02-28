@@ -1,0 +1,51 @@
+﻿@model Projektverwaltung.Database.Mitarbeiter
+
+@{
+    ViewBag.Title = "Details";
+    var roleList = ViewBag.RoleList as SelectList;
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Mitarbeiter</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.vorname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.vorname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.abteilung)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.abteilung)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pensum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pensum)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
