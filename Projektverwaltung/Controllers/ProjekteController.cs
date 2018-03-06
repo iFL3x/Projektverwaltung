@@ -14,30 +14,14 @@ namespace Projektverwaltung.Controllers
     {
         private ProjektverwaltungEntities db = new ProjektverwaltungEntities();
 
-        private SelectList StatusList = new SelectList(
-                new Dictionary<int, string>
-                {
-                    { 1, "In Planung" },
-                    { 2, "Geplant" },
-                    { 3, "Bewilligt" },
-                    { 4, "In Arbeit" },
-                    { 5, "Abgeschlossen" }
-                }, "Key", "Value");
-
-        private SelectList PrioList = new SelectList(
-                new Dictionary<int, string>
-                {
-                    { 1, "1 - Tief" },
-                    { 2, "2 - Mittel" },
-                    { 3, "3 - Hoch" }
-                }, "Key", "Value");
+        
 
         // GET: Projekte
         public ActionResult Index()
         {
             var projekt = db.Projekt.Include(p => p.Mitarbeiter).Include(p => p.Vorgehensmodell);
-            ViewBag.StatusList = StatusList;
-            ViewBag.PrioList = PrioList;
+            ViewBag.StatusList = GetStatusList();
+            ViewBag.PrioList = GetPrioList();
             return View(projekt.ToList());
         }
 
@@ -54,8 +38,8 @@ namespace Projektverwaltung.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.StatusList = StatusList;
-            ViewBag.PrioList = PrioList;
+            ViewBag.StatusList = GetStatusList();
+            ViewBag.PrioList = GetPrioList();
 
             return View(projekt);
         }
@@ -64,10 +48,10 @@ namespace Projektverwaltung.Controllers
         public ActionResult Create()
         {
             ViewBag.projektleiter_id = new SelectList(db.Mitarbeiter, "id", "name");
-            ViewBag.vorgehensmodell_id = new SelectList(db.Vorgehensmodell, "id", "name");
+            ViewBag.vorgehensmodell_id = new SelectList(db.Vorgehensmodell.Where(s => s.status != 2) , "id", "name");
 
-            ViewBag.StatusList = this.StatusList;
-            ViewBag.PrioList = this.PrioList;
+            ViewBag.StatusList = GetStatusList();
+            ViewBag.PrioList = GetPrioList();
 
             return View();
         }
@@ -81,7 +65,41 @@ namespace Projektverwaltung.Controllers
         {
             if (ModelState.IsValid)
             {
+
+               foreach(VorgehensmodellPhase vp in db.VorgehensmodellPhase.Where(s => s.vorgehensmodell_id == projekt.vorgehensmodell_id))
+                {
+                    db.ProjektPhase.Add(new ProjektPhase()
+                    {
+                        name = vp.name,
+                        beschreibung = vp.beschreibung,
+                        projekt_id = projekt.id,
+                        status = 1
+                    });
+                }
+
                 db.Projekt.Add(projekt);
+                db.SaveChanges();
+
+                
+
+                foreach(ProjektPhase p in db.ProjektPhase.Where(p => p.projekt_id == projekt.id))
+                {
+
+                    db.Aktivitaet.Add(new Aktivitaet()
+                    {
+                        name = "Neue Aktivität",
+                        projektphase_id = p.id,
+                        kostenart_id = 1,
+                        status = 1
+                    });
+
+                    db.Meilenstein.Add(new Meilenstein()
+                    {
+                        name = p.name + " Meilenstein",
+                        projektphase_id = p.id
+                    });
+                }
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -103,8 +121,24 @@ namespace Projektverwaltung.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.StatusList = this.StatusList;
-            ViewBag.PrioList = this.PrioList;
+            //Get state list for manipulations
+            var statusList = GetStatusList();
+
+            //Check if there are uncompleted project phases
+            //If all are completed, enable project state "Abgeschlossen"
+            if (db.ProjektPhase.Where(s => s.status != 4 && s.projekt_id == projekt.id).Count() == 0)
+            {
+                statusList.FirstOrDefault(x => x.Text == "Abgeschlossen").Disabled = false;
+            }
+            //Activity states are checked within the project phase partials!
+            
+
+            ViewBag.StatusList = statusList;
+            ViewBag.PhasenStatusList = GetPhasenStatusList();
+            ViewBag.PrioList = GetPrioList();
+            ViewBag.AktivitaetenStatusList = GetAktivitaetenStatusList();
+
+            ViewBag.kostenart_id = new SelectList(db.Kostenart, "id", "name");
             ViewBag.projektleiter_id = new SelectList(db.Mitarbeiter, "id", "name", projekt.projektleiter_id);
             ViewBag.vorgehensmodell_id = new SelectList(db.Vorgehensmodell, "id", "name", projekt.vorgehensmodell_id);
             return View(projekt);
@@ -115,18 +149,135 @@ namespace Projektverwaltung.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,name,beschreibung,status,prioritaet,startdatum_geplant,enddatum_geplant,startdatum_effektiv,enddatum_effektiv,fortschritt,dokument_link,projektleiter_id,vorgehensmodell_id")] Projekt projekt)
+        public ActionResult Edit(Projekt projekt)
         {
+
             if (ModelState.IsValid)
             {
-                db.Entry(projekt).State = EntityState.Modified;
-                db.SaveChanges();
+
+                //Loop through the phases and update the entries in the db table
+                foreach (var phase in projekt.ProjektPhase)
+                {
+                    var dbphase = db.ProjektPhase.FirstOrDefault(p => p.id == phase.id);
+                    dbphase.name = phase.name;
+                    dbphase.beschreibung = phase.beschreibung;
+                    dbphase.status = phase.status;
+                    dbphase.startdatum_geplant = phase.startdatum_geplant;
+                    dbphase.enddatum_geplant = phase.enddatum_geplant;
+                    dbphase.startdatum_effektiv = phase.startdatum_effektiv;
+                    dbphase.enddatum_effektiv = phase.enddatum_effektiv;
+                    dbphase.fortschritt = phase.fortschritt;
+                    dbphase.freigabe_datum = phase.freigabe_datum;
+                    dbphase.freigabe_visum = phase.freigabe_visum;
+                    dbphase.dokumente_link = phase.dokumente_link;
+                    dbphase.reviewdatum_geplant = phase.reviewdatum_geplant;
+                    dbphase.reviewdatum_effektiv = phase.reviewdatum_effektiv;
+
+
+                    //Loop through the activities and update the entries in the db table
+                    foreach(var activity in phase.Aktivitaet)
+                    {
+                        var dbactivity = db.Aktivitaet.FirstOrDefault(a => a.id == activity.id);
+                        dbactivity.name = activity.name;
+                        dbactivity.status = activity.status;
+                        dbactivity.startdatum_geplant = activity.startdatum_geplant;
+                        dbactivity.enddatum_geplant = activity.enddatum_geplant;
+                        dbactivity.startdatum_effektiv = activity.startdatum_effektiv;
+                        dbactivity.enddatum_effektiv = activity.enddatum_effektiv;
+                        dbactivity.erwartete_kosten = activity.erwartete_kosten;
+                        dbactivity.effektive_kosten = activity.effektive_kosten;
+                        dbactivity.kostenart_id = activity.kostenart_id;
+                        dbactivity.fortschritt = activity.fortschritt;
+                        dbactivity.dokumente_link = activity.dokumente_link;
+                    }
+                    //Clear the table on the model so we don't get conflicts here
+                    phase.Aktivitaet.Clear();
+                }
+
+                //Clear the table on the model so we don't get conflicts here
+                projekt.ProjektPhase.Clear();
+
+
+                try
+                {
+                    //Update vorgehensmodell table and save changes
+                    db.Entry(projekt).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
                 return RedirectToAction("Index");
             }
+            ViewBag.StatusList = GetStatusList();
+            ViewBag.PhasenStatusList = GetPhasenStatusList();
+            ViewBag.PrioList = GetPrioList();
+            ViewBag.AktivitaetenStatusList = GetAktivitaetenStatusList();
+            ViewBag.kostenart_id = new SelectList(db.Kostenart, "id", "name");
             ViewBag.projektleiter_id = new SelectList(db.Mitarbeiter, "id", "name", projekt.projektleiter_id);
             ViewBag.vorgehensmodell_id = new SelectList(db.Vorgehensmodell, "id", "name", projekt.vorgehensmodell_id);
+
             return View(projekt);
         }
+
+
+        public ActionResult AddAktivitaet(int phaseId, int projektId)
+        {
+
+            db.Aktivitaet.Add(new Aktivitaet()
+            {
+                name = "Neue Aktivität",
+                projektphase_id = phaseId,
+                kostenart_id = 1,
+                status = 1
+            });
+
+             try
+             {
+                 db.SaveChanges();
+             }
+             catch (Exception e)
+             {
+                throw e;
+             }
+
+            return this.RedirectToAction("Edit", new { id = projektId });
+        }
+
+        public ActionResult RemoveAktivitaet(int aktivitaetId, int projektId)
+        {
+
+            var akt = db.Aktivitaet.FirstOrDefault(a => a.id == aktivitaetId);
+            db.Aktivitaet.Remove(akt);
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return this.RedirectToAction("Edit", new { id = projektId });
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         protected override void Dispose(bool disposing)
         {
@@ -136,5 +287,50 @@ namespace Projektverwaltung.Controllers
             }
             base.Dispose(disposing);
         }
+
+
+
+
+
+
+        private IEnumerable<SelectListItem> GetStatusList()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            list.Add(new SelectListItem { Value = "1", Text = "In Planung", Disabled = false });
+            list.Add(new SelectListItem { Value = "2", Text = "Geplant", Disabled = false });
+            list.Add(new SelectListItem { Value = "3", Text = "Bewilligt", Disabled = false });
+            list.Add(new SelectListItem { Value = "4", Text = "In Arbeit", Disabled = false });
+            list.Add(new SelectListItem { Value = "5", Text = "Abgeschlossen", Disabled = true });
+            return list;
+        }
+
+        private IEnumerable<SelectListItem> GetPhasenStatusList()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            list.Add(new SelectListItem { Value = "1", Text = "In Planung", Disabled = false });
+            list.Add(new SelectListItem { Value = "2", Text = "Freigegeben", Disabled = false });
+            list.Add(new SelectListItem { Value = "3", Text = "In Arbeit", Disabled = false });
+            list.Add(new SelectListItem { Value = "4", Text = "Abgeschlossen", Disabled = true });
+            return list;
+        }
+
+        private IEnumerable<SelectListItem> GetAktivitaetenStatusList()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            list.Add(new SelectListItem { Value = "1", Text = "In Planung", Disabled = false });
+            list.Add(new SelectListItem { Value = "2", Text = "In Arbeit", Disabled = false });
+            list.Add(new SelectListItem { Value = "3", Text = "Abgeschlossen", Disabled = false });
+            return list;
+        }
+
+        private IEnumerable<SelectListItem> GetPrioList()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            list.Add(new SelectListItem { Value = "1", Text = "1 - Tief", Disabled = false });
+            list.Add(new SelectListItem { Value = "2", Text = "2 - Mittel", Disabled = false });
+            list.Add(new SelectListItem { Value = "3", Text = "3 - Hoch", Disabled = false });
+            return list;
+        }
+
     }
 }

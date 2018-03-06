@@ -19,6 +19,10 @@ namespace Projektverwaltung
                 cfg.CreateMap<Mitarbeiter, MitarbeiterViewModel>()
                     .ForMember(d => d.Funktionen, o => o.MapFrom(s => this.GetEmployeeFunctions(s.id)));
                 cfg.CreateMap<MitarbeiterViewModel, Mitarbeiter>();
+
+                cfg.CreateMap<Vorgehensmodell, VorgehensmodellViewModel>()
+                    .ForMember(d => d.Phasen, o => o.MapFrom(s => this.GetVorgehensmodellPhasen(s.id)));
+                cfg.CreateMap<VorgehensmodellViewModel, Vorgehensmodell>();
             });
         }
 
@@ -29,6 +33,14 @@ namespace Projektverwaltung
             foreach (var item in this.db.MitarbeiterFunktion.Where(x => x.mitarbeiter_id == employeeId))
             {
                 yield return item.Funktion;
+            }
+        }
+
+        private IEnumerable<VorgehensmodellPhase> GetVorgehensmodellPhasen(int vorgehensmodellId)
+        {
+            foreach (var item in this.db.VorgehensmodellPhase.Where(x => x.vorgehensmodell_id == vorgehensmodellId))
+            {
+                yield return item;
             }
         }
     }

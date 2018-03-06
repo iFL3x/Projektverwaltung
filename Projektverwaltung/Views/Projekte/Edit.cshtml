@@ -12,10 +12,11 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Projekt - @Model.id</h4>
+        <h3>Projekt - @Model.id</h3>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.id)
+        @Html.HiddenFor(model => model.vorgehensmodell_id)
 
         <div class="form-group">
             @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -36,7 +37,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.status, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("status", ((SelectList)ViewBag.StatusList), "Status wählen", new { @class = "form-control" })
+                @Html.DropDownList("status", (IEnumerable<SelectListItem>)ViewBag.StatusList, "Status wählen", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -44,7 +45,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.prioritaet, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("prioritaet", ((SelectList)ViewBag.PrioList), "Priorität wählen", new { @class = "form-control" })
+                @Html.DropDownList("prioritaet", ((IEnumerable<SelectListItem>)ViewBag.PrioList), "Priorität wählen", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.prioritaet, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -58,10 +59,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.vorgehensmodell_id, "Vorgehensmodell", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.fortschritt, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("vorgehensmodell_id", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.vorgehensmodell_id, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.fortschritt, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.fortschritt, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -98,10 +99,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.fortschritt, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.bewilligungsdatum, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.fortschritt, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.fortschritt, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.bewilligungsdatum, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.bewilligungsdatum, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -113,8 +114,18 @@
             </div>
         </div>
 
+        <h3>Phasen</h3>
+        <hr />
+
+        <div id="phasen">
+            @Html.EditorFor(model => model.ProjektPhase)
+        </div>
+
+
+
+
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-10">
                 <input type="submit" value="Speichern" class="btn btn-default" />
             </div>
         </div>

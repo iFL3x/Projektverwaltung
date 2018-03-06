@@ -34,6 +34,7 @@ namespace Projektverwaltung.Database
         public string dokument_link { get; set; }
         public int projektleiter_id { get; set; }
         public int vorgehensmodell_id { get; set; }
+        public Nullable<System.DateTime> bewilligungsdatum { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Dokument> Dokument { get; set; }

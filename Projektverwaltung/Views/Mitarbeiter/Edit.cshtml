@@ -51,10 +51,11 @@
         </div>
     </div>
 
+    
     <div class="form-group">
         @Html.LabelFor(model => model.Funktionen, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            
+
                 @foreach (var item in allFunctions)
                 {
                     if (Model.Funktionen.Any(x => x.id == item.id))
@@ -66,7 +67,7 @@
                         <div><input type="checkbox" onchange="selectFunctionFromEmployee(@item.id, @Model.Id);" />&nbsp; @item.name</div>
                     }
                 }
-            
+
         </div>
     </div>
 

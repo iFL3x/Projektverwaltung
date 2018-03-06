@@ -1,0 +1,144 @@
+﻿@model Projektverwaltung.Database.ProjektPhase
+
+@{ 
+    var phasenStatusList = ViewBag.PhasenStatusList as IEnumerable<SelectListItem>;
+    if(Model.Aktivitaet.Where(a => a.projektphase_id == Model.id).Count() > 0 && Model.Aktivitaet.Where(a => a.projektphase_id == Model.id && a.status != 3).Count() == 0)
+    {
+        phasenStatusList.FirstOrDefault(x => x.Text == "Abgeschlossen").Disabled = false;
+    } 
+}
+<div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <h4>@Model.name</h4>
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#phase_@Model.id"><span class="glyphicon glyphicon-resize-vertical"></span> Show / Hide</button>
+        </div>
+    </div>
+    <div id="phase_@Model.id" class="collapse phase">
+        @Html.HiddenFor(model => model.id)
+        @Html.HiddenFor(model => model.projekt_id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.beschreibung, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.beschreibung, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.beschreibung, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.status, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("status", phasenStatusList, "Status wählen", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.startdatum_geplant, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.startdatum_geplant, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.startdatum_geplant, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.enddatum_geplant, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.enddatum_geplant, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.enddatum_geplant, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.startdatum_effektiv, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.startdatum_effektiv, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.startdatum_effektiv, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.enddatum_effektiv, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.enddatum_effektiv, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.enddatum_effektiv, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.fortschritt, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.fortschritt, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.fortschritt, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.freigabe_datum, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.freigabe_datum, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.freigabe_datum, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.freigabe_visum, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.freigabe_visum, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.freigabe_visum, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.dokumente_link, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.dokumente_link, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.dokumente_link, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.reviewdatum_geplant, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.reviewdatum_geplant, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.reviewdatum_geplant, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.reviewdatum_effektiv, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.reviewdatum_effektiv, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.reviewdatum_effektiv, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <h4>Aktivitäten</h4>
+        <div class="form-group">
+            <div class="col-md-10">
+                <a href="@Url.Action("AddAktivitaet", "Projekte", new { phaseId = Model.id, projektId = Model.projekt_id})" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus"></span> Aktivität hinzufügen
+                </a>
+            </div>
+        </div>
+        <div id="aktivitaeten">
+            @Html.EditorFor(model => model.Aktivitaet)
+        </div>
+    </div>
+ </div>
+<hr />
+
+@{ 
+    phasenStatusList.FirstOrDefault(x => x.Text == "Abgeschlossen").Disabled = true;
+}

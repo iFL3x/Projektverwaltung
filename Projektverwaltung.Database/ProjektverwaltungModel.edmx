@@ -10,15 +10,15 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="status" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="status" Type="int" />
           <Property Name="projektphase_id" Type="int" Nullable="false" />
-          <Property Name="startdatum_geplant" Type="datetime" Nullable="false" />
-          <Property Name="enddatum_geplant" Type="datetime" Nullable="false" />
-          <Property Name="startdatum_effektiv" Type="datetime" Nullable="false" />
-          <Property Name="enddatum_effektiv" Type="datetime" Nullable="false" />
-          <Property Name="erwartete_kosten" Type="float" Nullable="false" />
-          <Property Name="effektive_kosten" Type="float" Nullable="false" />
+          <Property Name="startdatum_geplant" Type="datetime" />
+          <Property Name="enddatum_geplant" Type="datetime" />
+          <Property Name="startdatum_effektiv" Type="datetime" />
+          <Property Name="enddatum_effektiv" Type="datetime" />
+          <Property Name="erwartete_kosten" Type="float" />
+          <Property Name="effektive_kosten" Type="float" />
           <Property Name="kostenart_id" Type="int" Nullable="false" />
           <Property Name="fortschritt" Type="float" />
           <Property Name="dokumente_link" Type="varchar" MaxLength="250" />
@@ -63,7 +63,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="60" />
           <Property Name="projektphase_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Mitarbeiter">
@@ -101,6 +101,7 @@
           <Property Name="dokument_link" Type="varchar" MaxLength="250" />
           <Property Name="projektleiter_id" Type="int" Nullable="false" />
           <Property Name="vorgehensmodell_id" Type="int" Nullable="false" />
+          <Property Name="bewilligungsdatum" Type="datetime" />
         </EntityType>
         <EntityType Name="ProjektPhase">
           <Key>
@@ -109,11 +110,11 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="beschreibung" Type="varchar" MaxLength="250" />
-          <Property Name="status" Type="varchar" MaxLength="40" Nullable="false" />
-          <Property Name="startdatum_geplant" Type="datetime" Nullable="false" />
-          <Property Name="enddatum_geplant" Type="datetime" Nullable="false" />
-          <Property Name="startdatum_effektiv" Type="datetime" Nullable="false" />
-          <Property Name="enddatum_effektiv" Type="datetime" Nullable="false" />
+          <Property Name="status" Type="int" />
+          <Property Name="startdatum_geplant" Type="datetime" />
+          <Property Name="enddatum_geplant" Type="datetime" />
+          <Property Name="startdatum_effektiv" Type="datetime" />
+          <Property Name="enddatum_effektiv" Type="datetime" />
           <Property Name="fortschritt" Type="float" />
           <Property Name="freigabe_datum" Type="datetime" />
           <Property Name="freigabe_visum" Type="varchar" MaxLength="40" />
@@ -145,7 +146,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
           <Property Name="beschreibung" Type="varchar" MaxLength="250" />
           <Property Name="vorgehensmodell_id" Type="int" Nullable="false" />
         </EntityType>
@@ -397,15 +398,15 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="status" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="Int32" />
           <Property Name="projektphase_id" Type="Int32" Nullable="false" />
-          <Property Name="startdatum_geplant" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="enddatum_geplant" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="startdatum_effektiv" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="enddatum_effektiv" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="erwartete_kosten" Type="Double" Nullable="false" />
-          <Property Name="effektive_kosten" Type="Double" Nullable="false" />
+          <Property Name="startdatum_geplant" Type="DateTime" Precision="3" />
+          <Property Name="enddatum_geplant" Type="DateTime" Precision="3" />
+          <Property Name="startdatum_effektiv" Type="DateTime" Precision="3" />
+          <Property Name="enddatum_effektiv" Type="DateTime" Precision="3" />
+          <Property Name="erwartete_kosten" Type="Double" />
+          <Property Name="effektive_kosten" Type="Double" />
           <Property Name="kostenart_id" Type="Int32" Nullable="false" />
           <Property Name="fortschritt" Type="Double" />
           <Property Name="dokumente_link" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
@@ -461,7 +462,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="projektphase_id" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ProjektPhase" Relationship="Self.FK_Meilenstein_Phase" FromRole="Meilenstein" ToRole="ProjektPhase" />
         </EntityType>
@@ -509,6 +510,7 @@
           <NavigationProperty Name="Mitarbeiter" Relationship="Self.FK_Projekt_Mitarbeiter" FromRole="Projekt" ToRole="Mitarbeiter" />
           <NavigationProperty Name="ProjektPhase" Relationship="Self.FK_Phase_Projekt" FromRole="Projekt" ToRole="ProjektPhase" />
           <NavigationProperty Name="Vorgehensmodell" Relationship="Self.FK_Projekt_Vorgehensmodell" FromRole="Projekt" ToRole="Vorgehensmodell" />
+          <Property Name="bewilligungsdatum" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="ProjektPhase">
           <Key>
@@ -517,11 +519,11 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="beschreibung" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="status" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="startdatum_geplant" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="enddatum_geplant" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="startdatum_effektiv" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="enddatum_effektiv" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="status" Type="Int32" />
+          <Property Name="startdatum_geplant" Type="DateTime" Precision="3" />
+          <Property Name="enddatum_geplant" Type="DateTime" Precision="3" />
+          <Property Name="startdatum_effektiv" Type="DateTime" Precision="3" />
+          <Property Name="enddatum_effektiv" Type="DateTime" Precision="3" />
           <Property Name="fortschritt" Type="Double" />
           <Property Name="freigabe_datum" Type="DateTime" Precision="3" />
           <Property Name="freigabe_visum" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
@@ -559,7 +561,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="beschreibung" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="vorgehensmodell_id" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Vorgehensmodell" Relationship="Self.FK_VorgehensmodellPhase_Vorgehensmodell" FromRole="VorgehensmodellPhase" ToRole="Vorgehensmodell" />
@@ -899,6 +901,7 @@
           <EntitySetMapping Name="Projekt">
             <EntityTypeMapping TypeName="ProjektverwaltungModel.Projekt">
               <MappingFragment StoreEntitySet="Projekt">
+                <ScalarProperty Name="bewilligungsdatum" ColumnName="bewilligungsdatum" />
                 <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />

@@ -25,11 +25,11 @@ namespace Projektverwaltung.Database
         public int id { get; set; }
         public string name { get; set; }
         public string beschreibung { get; set; }
-        public string status { get; set; }
-        public System.DateTime startdatum_geplant { get; set; }
-        public System.DateTime enddatum_geplant { get; set; }
-        public System.DateTime startdatum_effektiv { get; set; }
-        public System.DateTime enddatum_effektiv { get; set; }
+        public Nullable<int> status { get; set; }
+        public Nullable<System.DateTime> startdatum_geplant { get; set; }
+        public Nullable<System.DateTime> enddatum_geplant { get; set; }
+        public Nullable<System.DateTime> startdatum_effektiv { get; set; }
+        public Nullable<System.DateTime> enddatum_effektiv { get; set; }
         public Nullable<double> fortschritt { get; set; }
         public Nullable<System.DateTime> freigabe_datum { get; set; }
         public string freigabe_visum { get; set; }

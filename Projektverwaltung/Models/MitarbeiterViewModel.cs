@@ -1,6 +1,8 @@
 ﻿using Projektverwaltung.Database;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -16,7 +18,9 @@ namespace Projektverwaltung.Models
         public string Vorname { get; set; }
         
         public string Abteilung { get; set; }
-        
+
+        [DisplayName("Pensum")]
+        [Range(1, 100)]
         public int Pensum { get; set; }
 
         public IEnumerable<Funktion> Funktionen { get; set; }

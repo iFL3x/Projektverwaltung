@@ -2,8 +2,8 @@
 
 @{
     ViewBag.Title = "Index";
-    var statusList = ViewBag.StatusList as SelectList;
-    var prioList = ViewBag.PrioList as SelectList;
+    var statusList = ViewBag.StatusList as IEnumerable<SelectListItem>;
+    var prioList = ViewBag.PrioList as IEnumerable<SelectListItem>;
 }
 
 <h2>Projektübersicht</h2>

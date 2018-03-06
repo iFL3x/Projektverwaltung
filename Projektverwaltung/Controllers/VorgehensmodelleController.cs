@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Projektverwaltung.Database;
+using Projektverwaltung.Models;
+using AutoMapper;
 
 namespace Projektverwaltung.Controllers
 {
@@ -21,12 +23,10 @@ namespace Projektverwaltung.Controllers
                     { 2, "Inaktiv" }
                 }, "Key", "Value");
 
-
         // GET: Vorgehensmodelle
         public ActionResult Index()
         {
             ViewBag.StatusList = StatusList;
-
             return View(db.Vorgehensmodell.ToList());
         }
 
@@ -42,17 +42,13 @@ namespace Projektverwaltung.Controllers
             {
                 return HttpNotFound();
             }
-
-            //model.phasen = db.VorgehensmodellPhase.Where(p => p.vorgehensmodell_id == vorgehensmodell.id).ToList();
-
             return View(vorgehensmodell);
         }
 
         // GET: Vorgehensmodelle/Create
         public ActionResult Create()
-        {     
+        {
             ViewBag.StatusList = StatusList;
-
             return View();
         }
 
@@ -61,16 +57,16 @@ namespace Projektverwaltung.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Vorgehensmodell modell)
+        public ActionResult Create([Bind(Include = "id,name,status")] Vorgehensmodell vorgehensmodell)
         {
             if (ModelState.IsValid)
             {
-                db.Vorgehensmodell.Add(modell);
+                db.Vorgehensmodell.Add(vorgehensmodell);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(modell);
+            return View(vorgehensmodell);
         }
 
         // GET: Vorgehensmodelle/Edit/5
@@ -80,16 +76,21 @@ namespace Projektverwaltung.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var model = new Vorgehensmodell();
-            model = db.Vorgehensmodell.Find(id);
+            Vorgehensmodell vorgehensmodell = db.Vorgehensmodell.Find(id);
+            if (vorgehensmodell == null)
+            {
+                return HttpNotFound();
+            }
+
+            //var model = Mapper.Map<VorgehensmodellViewModel>(vorgehensmodell);
 
             ViewBag.StatusList = StatusList;
-
-            return View(model);
+            return View(vorgehensmodell);
         }
 
-
         // POST: Vorgehensmodelle/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Vorgehensmodell vorgehensmodell)
@@ -97,9 +98,28 @@ namespace Projektverwaltung.Controllers
             if (ModelState.IsValid)
             {
 
-                // Save data
-                db.Entry(vorgehensmodell).State = EntityState.Modified;
-                db.SaveChanges();
+                //Loop through the phases and update the entries in the db table
+                foreach(var item in vorgehensmodell.VorgehensmodellPhase)
+                {
+                    var dbitem = db.VorgehensmodellPhase.FirstOrDefault(s => s.id == item.id);
+                    dbitem.name = item.name;
+                    dbitem.beschreibung = item.beschreibung;
+                }
+
+                //Clear the table on the model so we don't get conflicts here
+                vorgehensmodell.VorgehensmodellPhase.Clear();
+
+                try
+                {
+                    //Update vorgehensmodell table and save changes
+                    db.Entry(vorgehensmodell).State = EntityState.Modified;
+                    db.SaveChanges();
+                } catch(Exception e)
+                {
+                    throw e;
+                }
+
+                
                 return RedirectToAction("Index");
             }
             return View(vorgehensmodell);
@@ -131,15 +151,52 @@ namespace Projektverwaltung.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public ActionResult AddPhase()
+        public ActionResult AddPhase(int vorgehensmodellId)
         {
-            var phase = new VorgehensmodellPhase();
-            
-            // Add phase to the List  vorgehensmodell.VorgehensmodellPhase
 
+            db.VorgehensmodellPhase.Add(new VorgehensmodellPhase() {
+                vorgehensmodell_id = vorgehensmodellId,
+                name = "Neue Phase"
+            });
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+            {
+                Exception raise = dbEx;
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        string message = string.Format("{0}:{1}",
+                            validationErrors.Entry.Entity.ToString(),
+                            validationError.ErrorMessage);
+                        // raise a new exception nesting
+                        // the current instance as InnerException
+                        raise = new InvalidOperationException(message, raise);
+                    }
+                }
+                throw raise;
+            }
 
-            return PartialView("~/Views/Vorgehensmodelle/Phase.cshtml", new VorgehensmodellPhase());
+            return this.RedirectToAction("Edit", new { id = vorgehensmodellId });
+        }
+
+        public ActionResult RemovePhase(int phaseId, int vorgehensmodellId)
+        {
+
+            var phase = db.VorgehensmodellPhase.FirstOrDefault(p => p.id == phaseId);
+            db.VorgehensmodellPhase.Remove(phase);
+            try
+            {
+                db.SaveChanges();
+            } catch (Exception e)
+            {
+                throw e;
+            }
+
+            return this.RedirectToAction("Edit", new { id = vorgehensmodellId});
         }
 
 

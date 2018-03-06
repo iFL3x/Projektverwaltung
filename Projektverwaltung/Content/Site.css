@@ -28,3 +28,18 @@ textarea {
 .nav > li, .navbar-brand{
     letter-spacing: 3px;
 }
+
+.phase {
+    /*background-color:#EFF5FB;*/
+    background-color: #D9E6F4;
+    padding:20px;
+    border-radius:5px;
+}
+
+.aktivitaet {
+    /*
+    background-color:#D3DFEA;*/
+    background-color:#F8D3FF;
+    padding:20px;
+    border-radius:5px;
+}
