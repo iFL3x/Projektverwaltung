@@ -1,10 +1,8 @@
-﻿using Projektverwaltung.Database;
-using System;
+﻿
+using Projektverwaltung.Database;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace Projektverwaltung.Models
 {

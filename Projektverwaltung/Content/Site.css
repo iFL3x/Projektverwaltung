@@ -29,17 +29,33 @@ textarea {
     letter-spacing: 3px;
 }
 
-.phase {
-    /*background-color:#EFF5FB;*/
-    background-color: #D9E6F4;
+
+.phase, .aktivitaet, .meilenstein, .aktivitaet-mitarbeiter {
     padding:20px;
     border-radius:5px;
 }
 
-.aktivitaet {
-    /*
-    background-color:#D3DFEA;*/
-    background-color:#F8D3FF;
-    padding:20px;
-    border-radius:5px;
+.phase {
+    background-color: #D9E6F4;
 }
+
+.aktivitaet {
+    background-color:#F8D3FF;
+}
+
+.meilenstein {
+    background-color:#e8ffee;
+}
+.aktivitaet-mitarbeiter {
+    background-color:#ddb3d9;
+}
+
+
+hr {
+    border-top: 1px solid rgb(140,140,140);
+}
+
+.abschnitt {
+    border-top: 2px solid rgb(140,140,140) !important;
+}
+

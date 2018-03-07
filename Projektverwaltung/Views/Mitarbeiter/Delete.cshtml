@@ -4,11 +4,11 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<h2>Mitarbeiter Löschen</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Möchtest du den Mitarbeiter "@Model.id" bzw. "@Model.name" wirklich löschen??</h3>
 <div>
-    <h4>Mitarbeiter</h4>
+    <h4>Mitarbeiter - @Model.id</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -49,8 +49,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Löschen" class="btn btn-default" /> |
+            @Html.ActionLink("Zurück zur Übersicht", "Index")
         </div>
     }
 </div>

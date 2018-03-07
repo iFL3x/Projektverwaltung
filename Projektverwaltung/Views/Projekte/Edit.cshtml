@@ -2,9 +2,10 @@
 
 @{
     ViewBag.Title = "Edit";
+    var statusList = ViewBag.StatusList as IEnumerable<SelectListItem>;
 }
 
-<h2>Projekt Editieren</h2>
+<h2>Projekt Bearbeiten</h2>
 
 
 @using (Html.BeginForm())
@@ -12,8 +13,8 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h3>Projekt - @Model.id</h3>
-        <hr />
+        <h3>Projekt - @Model.id <small>(@Model.fortschritt% &ndash; @statusList.Where(s => s.Value == Model.status.ToString()).First().Text)</small></h3>
+        <hr class="abschnitt" />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.id)
         @Html.HiddenFor(model => model.vorgehensmodell_id)
@@ -37,7 +38,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.status, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("status", (IEnumerable<SelectListItem>)ViewBag.StatusList, "Status wählen", new { @class = "form-control" })
+                @Html.DropDownList("status", statusList, "Status wählen", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -59,7 +60,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.fortschritt, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Fortschritt [%]", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.fortschritt, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.fortschritt, "", new { @class = "text-danger" })
@@ -108,32 +109,34 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.dokument_link, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dokument_link, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.dokument_link, new { htmlAttributes = new { @class = "form-control input-file-field" } })
                 @Html.ValidationMessageFor(model => model.dokument_link, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-1">
+                <input type="file" class="input-file-select" value="" />
+                <button class="btn btn-default input-file-button"><span class="glyphicon glyphicon-plus"></span> Hinzufügen</button>
             </div>
         </div>
 
+        
         <h3>Phasen</h3>
-        <hr />
-
+        <hr class="abschnitt" />
         <div id="phasen">
             @Html.EditorFor(model => model.ProjektPhase)
         </div>
-
-
-
+        <hr class="abschnitt" />
 
         <div class="form-group">
             <div class="col-md-10">
-                <input type="submit" value="Speichern" class="btn btn-default" />
+                <input type="submit" value="Speichern" class="btn btn-success" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Zurück", "Index")
+    @Html.ActionLink("Zurück zur Übersicht", "Index")
 </div>
 
 @section Scripts {

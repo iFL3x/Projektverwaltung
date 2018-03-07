@@ -17,13 +17,13 @@ namespace Projektverwaltung.Database
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Kostenart()
         {
-            this.Aktivitaet = new HashSet<Aktivitaet>();
+            this.AktivitaetMitarbeiter = new HashSet<AktivitaetMitarbeiter>();
         }
     
         public int id { get; set; }
         public string name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Aktivitaet> Aktivitaet { get; set; }
+        public virtual ICollection<AktivitaetMitarbeiter> AktivitaetMitarbeiter { get; set; }
     }
 }

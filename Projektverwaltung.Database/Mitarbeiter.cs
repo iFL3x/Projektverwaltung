@@ -20,6 +20,7 @@ namespace Projektverwaltung.Database
             this.AktivitaetMitarbeiter = new HashSet<AktivitaetMitarbeiter>();
             this.MitarbeiterFunktion = new HashSet<MitarbeiterFunktion>();
             this.Projekt = new HashSet<Projekt>();
+            this.Aktivitaet = new HashSet<Aktivitaet>();
         }
     
         public int id { get; set; }
@@ -34,5 +35,7 @@ namespace Projektverwaltung.Database
         public virtual ICollection<MitarbeiterFunktion> MitarbeiterFunktion { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Projekt> Projekt { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Aktivitaet> Aktivitaet { get; set; }
     }
 }

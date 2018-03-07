@@ -169,7 +169,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\MitarbeiterViewModel.cs" />
-    <Compile Include="Models\VorgehensmodellViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +185,7 @@
     </Content>
     <Content Include="ClassDiagram1.cd" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\functions.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -227,6 +227,8 @@
     <Content Include="Views\Vorgehensmodelle\EditorTemplates\VorgehensmodellPhase.cshtml" />
     <Content Include="Views\Projekte\EditorTemplates\ProjektPhase.cshtml" />
     <Content Include="Views\Projekte\EditorTemplates\Aktivitaet.cshtml" />
+    <Content Include="Views\Projekte\EditorTemplates\Meilenstein.cshtml" />
+    <Content Include="Views\Projekte\EditorTemplates\AktivitaetMitarbeiter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

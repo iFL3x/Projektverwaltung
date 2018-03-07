@@ -17,11 +17,14 @@ namespace Projektverwaltung.Database
         public int id { get; set; }
         public int aktivitaet_id { get; set; }
         public int mitarbeiter_id { get; set; }
-        public int budgetierte_zeit { get; set; }
-        public int effektive_zeit { get; set; }
+        public Nullable<int> budgetierte_zeit { get; set; }
+        public Nullable<int> effektive_zeit { get; set; }
         public string abweichungsgrund { get; set; }
+        public string funktion { get; set; }
+        public int kostenart_id { get; set; }
     
         public virtual Aktivitaet Aktivitaet { get; set; }
         public virtual Mitarbeiter Mitarbeiter { get; set; }
+        public virtual Kostenart Kostenart { get; set; }
     }
 }

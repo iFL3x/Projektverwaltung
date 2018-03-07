@@ -19,9 +19,10 @@
           <Property Name="enddatum_effektiv" Type="datetime" />
           <Property Name="erwartete_kosten" Type="float" />
           <Property Name="effektive_kosten" Type="float" />
-          <Property Name="kostenart_id" Type="int" Nullable="false" />
           <Property Name="fortschritt" Type="float" />
           <Property Name="dokumente_link" Type="varchar" MaxLength="250" />
+          <Property Name="verantwortlicher_id" Type="int" />
+          <Property Name="abweichungen" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="AktivitaetMitarbeiter">
           <Key>
@@ -30,9 +31,11 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="aktivitaet_id" Type="int" Nullable="false" />
           <Property Name="mitarbeiter_id" Type="int" Nullable="false" />
-          <Property Name="budgetierte_zeit" Type="int" Nullable="false" />
-          <Property Name="effektive_zeit" Type="int" Nullable="false" />
+          <Property Name="budgetierte_zeit" Type="int" />
+          <Property Name="effektive_zeit" Type="int" />
           <Property Name="abweichungsgrund" Type="varchar" MaxLength="150" />
+          <Property Name="funktion" Type="varchar" MaxLength="150" />
+          <Property Name="kostenart_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Dokument">
           <Key>
@@ -65,6 +68,9 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="60" />
           <Property Name="projektphase_id" Type="int" Nullable="false" />
+          <Property Name="beschreibung" Type="varchar" MaxLength="500" />
+          <Property Name="status" Type="int" />
+          <Property Name="nicht_loeschbar" Type="int" />
         </EntityType>
         <EntityType Name="Mitarbeiter">
           <Key>
@@ -123,16 +129,6 @@
           <Property Name="reviewdatum_effektiv" Type="datetime" />
           <Property Name="projekt_id" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="Vorgehensmodell">
           <Key>
             <PropertyRef Name="id" />
@@ -150,15 +146,15 @@
           <Property Name="beschreibung" Type="varchar" MaxLength="250" />
           <Property Name="vorgehensmodell_id" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Aktivitaet_Kostenart">
-          <End Role="Kostenart" Type="Self.Kostenart" Multiplicity="1" />
+        <Association Name="FK_Aktivitaet_Mitarbeiter">
+          <End Role="Mitarbeiter" Type="Self.Mitarbeiter" Multiplicity="0..1" />
           <End Role="Aktivitaet" Type="Self.Aktivitaet" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Kostenart">
+            <Principal Role="Mitarbeiter">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Aktivitaet">
-              <PropertyRef Name="kostenart_id" />
+              <PropertyRef Name="verantwortlicher_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -183,6 +179,18 @@
             </Principal>
             <Dependent Role="AktivitaetMitarbeiter">
               <PropertyRef Name="aktivitaet_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AktivitaetMitarbeiter_Kostenart">
+          <End Role="Kostenart" Type="Self.Kostenart" Multiplicity="1" />
+          <End Role="AktivitaetMitarbeiter" Type="Self.AktivitaetMitarbeiter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kostenart">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AktivitaetMitarbeiter">
+              <PropertyRef Name="kostenart_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -329,11 +337,10 @@
           <EntitySet Name="MitarbeiterFunktion" EntityType="Self.MitarbeiterFunktion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Projekt" EntityType="Self.Projekt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProjektPhase" EntityType="Self.ProjektPhase" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vorgehensmodell" EntityType="Self.Vorgehensmodell" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VorgehensmodellPhase" EntityType="Self.VorgehensmodellPhase" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Aktivitaet_Kostenart" Association="Self.FK_Aktivitaet_Kostenart">
-            <End Role="Kostenart" EntitySet="Kostenart" />
+          <AssociationSet Name="FK_Aktivitaet_Mitarbeiter" Association="Self.FK_Aktivitaet_Mitarbeiter">
+            <End Role="Mitarbeiter" EntitySet="Mitarbeiter" />
             <End Role="Aktivitaet" EntitySet="Aktivitaet" />
           </AssociationSet>
           <AssociationSet Name="FK_Aktivitaet_ProjektPhase" Association="Self.FK_Aktivitaet_ProjektPhase">
@@ -342,6 +349,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_AktivitaetMitarbeiter_Aktivitaet" Association="Self.FK_AktivitaetMitarbeiter_Aktivitaet">
             <End Role="Aktivitaet" EntitySet="Aktivitaet" />
+            <End Role="AktivitaetMitarbeiter" EntitySet="AktivitaetMitarbeiter" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AktivitaetMitarbeiter_Kostenart" Association="Self.FK_AktivitaetMitarbeiter_Kostenart">
+            <End Role="Kostenart" EntitySet="Kostenart" />
             <End Role="AktivitaetMitarbeiter" EntitySet="AktivitaetMitarbeiter" />
           </AssociationSet>
           <AssociationSet Name="FK_AktivitaetMitarbeiter_Mitarbeiter" Association="Self.FK_AktivitaetMitarbeiter_Mitarbeiter">
@@ -407,13 +418,14 @@
           <Property Name="enddatum_effektiv" Type="DateTime" Precision="3" />
           <Property Name="erwartete_kosten" Type="Double" />
           <Property Name="effektive_kosten" Type="Double" />
-          <Property Name="kostenart_id" Type="Int32" Nullable="false" />
           <Property Name="fortschritt" Type="Double" />
           <Property Name="dokumente_link" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Kostenart" Relationship="Self.FK_Aktivitaet_Kostenart" FromRole="Aktivitaet" ToRole="Kostenart" />
           <NavigationProperty Name="ProjektPhase" Relationship="Self.FK_Aktivitaet_ProjektPhase" FromRole="Aktivitaet" ToRole="ProjektPhase" />
           <NavigationProperty Name="AktivitaetMitarbeiter" Relationship="Self.FK_AktivitaetMitarbeiter_Aktivitaet" FromRole="Aktivitaet" ToRole="AktivitaetMitarbeiter" />
           <NavigationProperty Name="Dokument" Relationship="Self.FK_Dokument_Aktivitaet" FromRole="Aktivitaet" ToRole="Dokument" />
+          <Property Name="verantwortlicher_id" Type="Int32" />
+          <Property Name="abweichungen" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Mitarbeiter" Relationship="ProjektverwaltungModel.FK_Aktivitaet_Mitarbeiter" FromRole="Aktivitaet" ToRole="Mitarbeiter" />
         </EntityType>
         <EntityType Name="AktivitaetMitarbeiter">
           <Key>
@@ -422,11 +434,14 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="aktivitaet_id" Type="Int32" Nullable="false" />
           <Property Name="mitarbeiter_id" Type="Int32" Nullable="false" />
-          <Property Name="budgetierte_zeit" Type="Int32" Nullable="false" />
-          <Property Name="effektive_zeit" Type="Int32" Nullable="false" />
+          <Property Name="budgetierte_zeit" Type="Int32" />
+          <Property Name="effektive_zeit" Type="Int32" />
           <Property Name="abweichungsgrund" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Aktivitaet" Relationship="Self.FK_AktivitaetMitarbeiter_Aktivitaet" FromRole="AktivitaetMitarbeiter" ToRole="Aktivitaet" />
           <NavigationProperty Name="Mitarbeiter" Relationship="Self.FK_AktivitaetMitarbeiter_Mitarbeiter" FromRole="AktivitaetMitarbeiter" ToRole="Mitarbeiter" />
+          <Property Name="funktion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="kostenart_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Kostenart" Relationship="ProjektverwaltungModel.FK_AktivitaetMitarbeiter_Kostenart" FromRole="AktivitaetMitarbeiter" ToRole="Kostenart" />
         </EntityType>
         <EntityType Name="Dokument">
           <Key>
@@ -455,7 +470,7 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Aktivitaet" Relationship="Self.FK_Aktivitaet_Kostenart" FromRole="Kostenart" ToRole="Aktivitaet" />
+          <NavigationProperty Name="AktivitaetMitarbeiter" Relationship="ProjektverwaltungModel.FK_AktivitaetMitarbeiter_Kostenart" FromRole="Kostenart" ToRole="AktivitaetMitarbeiter" />
         </EntityType>
         <EntityType Name="Meilenstein">
           <Key>
@@ -465,6 +480,9 @@
           <Property Name="name" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="projektphase_id" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ProjektPhase" Relationship="Self.FK_Meilenstein_Phase" FromRole="Meilenstein" ToRole="ProjektPhase" />
+          <Property Name="beschreibung" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="Int32" />
+          <Property Name="nicht_loeschbar" Type="Int32" />
         </EntityType>
         <EntityType Name="Mitarbeiter">
           <Key>
@@ -478,6 +496,7 @@
           <NavigationProperty Name="AktivitaetMitarbeiter" Relationship="Self.FK_AktivitaetMitarbeiter_Mitarbeiter" FromRole="Mitarbeiter" ToRole="AktivitaetMitarbeiter" />
           <NavigationProperty Name="MitarbeiterFunktion" Relationship="Self.FK_MitarbeiterFunktion_Mitarbeiter" FromRole="Mitarbeiter" ToRole="MitarbeiterFunktion" />
           <NavigationProperty Name="Projekt" Relationship="Self.FK_Projekt_Mitarbeiter" FromRole="Mitarbeiter" ToRole="Projekt" />
+          <NavigationProperty Name="Aktivitaet" Relationship="ProjektverwaltungModel.FK_Aktivitaet_Mitarbeiter" FromRole="Mitarbeiter" ToRole="Aktivitaet" />
         </EntityType>
         <EntityType Name="MitarbeiterFunktion">
           <Key>
@@ -536,16 +555,6 @@
           <NavigationProperty Name="Meilenstein" Relationship="Self.FK_Meilenstein_Phase" FromRole="ProjektPhase" ToRole="Meilenstein" />
           <NavigationProperty Name="Projekt" Relationship="Self.FK_Phase_Projekt" FromRole="ProjektPhase" ToRole="Projekt" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="Vorgehensmodell">
           <Key>
             <PropertyRef Name="id" />
@@ -566,18 +575,6 @@
           <Property Name="vorgehensmodell_id" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Vorgehensmodell" Relationship="Self.FK_VorgehensmodellPhase_Vorgehensmodell" FromRole="VorgehensmodellPhase" ToRole="Vorgehensmodell" />
         </EntityType>
-        <Association Name="FK_Aktivitaet_Kostenart">
-          <End Role="Kostenart" Type="Self.Kostenart" Multiplicity="1" />
-          <End Role="Aktivitaet" Type="Self.Aktivitaet" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Kostenart">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Aktivitaet">
-              <PropertyRef Name="kostenart_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Aktivitaet_ProjektPhase">
           <End Role="ProjektPhase" Type="Self.ProjektPhase" Multiplicity="1" />
           <End Role="Aktivitaet" Type="Self.Aktivitaet" Multiplicity="*" />
@@ -745,13 +742,8 @@
           <EntitySet Name="MitarbeiterFunktion" EntityType="Self.MitarbeiterFunktion" />
           <EntitySet Name="Projekt" EntityType="Self.Projekt" />
           <EntitySet Name="ProjektPhase" EntityType="Self.ProjektPhase" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="Vorgehensmodell" EntityType="Self.Vorgehensmodell" />
           <EntitySet Name="VorgehensmodellPhase" EntityType="Self.VorgehensmodellPhase" />
-          <AssociationSet Name="FK_Aktivitaet_Kostenart" Association="Self.FK_Aktivitaet_Kostenart">
-            <End Role="Kostenart" EntitySet="Kostenart" />
-            <End Role="Aktivitaet" EntitySet="Aktivitaet" />
-          </AssociationSet>
           <AssociationSet Name="FK_Aktivitaet_ProjektPhase" Association="Self.FK_Aktivitaet_ProjektPhase">
             <End Role="ProjektPhase" EntitySet="ProjektPhase" />
             <End Role="Aktivitaet" EntitySet="Aktivitaet" />
@@ -804,7 +796,39 @@
             <End Role="Vorgehensmodell" EntitySet="Vorgehensmodell" />
             <End Role="VorgehensmodellPhase" EntitySet="VorgehensmodellPhase" />
           </AssociationSet>
+          <AssociationSet Name="FK_Aktivitaet_Mitarbeiter" Association="ProjektverwaltungModel.FK_Aktivitaet_Mitarbeiter">
+            <End Role="Mitarbeiter" EntitySet="Mitarbeiter" />
+            <End Role="Aktivitaet" EntitySet="Aktivitaet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AktivitaetMitarbeiter_Kostenart" Association="ProjektverwaltungModel.FK_AktivitaetMitarbeiter_Kostenart">
+            <End Role="Kostenart" EntitySet="Kostenart" />
+            <End Role="AktivitaetMitarbeiter" EntitySet="AktivitaetMitarbeiter" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_Aktivitaet_Mitarbeiter">
+          <End Type="ProjektverwaltungModel.Mitarbeiter" Role="Mitarbeiter" Multiplicity="0..1" />
+          <End Type="ProjektverwaltungModel.Aktivitaet" Role="Aktivitaet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mitarbeiter">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Aktivitaet">
+              <PropertyRef Name="verantwortlicher_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AktivitaetMitarbeiter_Kostenart">
+          <End Type="ProjektverwaltungModel.Kostenart" Role="Kostenart" Multiplicity="1" />
+          <End Type="ProjektverwaltungModel.AktivitaetMitarbeiter" Role="AktivitaetMitarbeiter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kostenart">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AktivitaetMitarbeiter">
+              <PropertyRef Name="kostenart_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -814,6 +838,8 @@
           <EntitySetMapping Name="Aktivitaet">
             <EntityTypeMapping TypeName="ProjektverwaltungModel.Aktivitaet">
               <MappingFragment StoreEntitySet="Aktivitaet">
+                <ScalarProperty Name="abweichungen" ColumnName="abweichungen" />
+                <ScalarProperty Name="verantwortlicher_id" ColumnName="verantwortlicher_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="status" ColumnName="status" />
@@ -824,7 +850,6 @@
                 <ScalarProperty Name="enddatum_effektiv" ColumnName="enddatum_effektiv" />
                 <ScalarProperty Name="erwartete_kosten" ColumnName="erwartete_kosten" />
                 <ScalarProperty Name="effektive_kosten" ColumnName="effektive_kosten" />
-                <ScalarProperty Name="kostenart_id" ColumnName="kostenart_id" />
                 <ScalarProperty Name="fortschritt" ColumnName="fortschritt" />
                 <ScalarProperty Name="dokumente_link" ColumnName="dokumente_link" />
               </MappingFragment>
@@ -833,6 +858,8 @@
           <EntitySetMapping Name="AktivitaetMitarbeiter">
             <EntityTypeMapping TypeName="ProjektverwaltungModel.AktivitaetMitarbeiter">
               <MappingFragment StoreEntitySet="AktivitaetMitarbeiter">
+                <ScalarProperty Name="kostenart_id" ColumnName="kostenart_id" />
+                <ScalarProperty Name="funktion" ColumnName="funktion" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="aktivitaet_id" ColumnName="aktivitaet_id" />
                 <ScalarProperty Name="mitarbeiter_id" ColumnName="mitarbeiter_id" />
@@ -872,6 +899,9 @@
           <EntitySetMapping Name="Meilenstein">
             <EntityTypeMapping TypeName="ProjektverwaltungModel.Meilenstein">
               <MappingFragment StoreEntitySet="Meilenstein">
+                <ScalarProperty Name="nicht_loeschbar" ColumnName="nicht_loeschbar" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="beschreibung" ColumnName="beschreibung" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="projektphase_id" ColumnName="projektphase_id" />
@@ -936,17 +966,6 @@
                 <ScalarProperty Name="reviewdatum_geplant" ColumnName="reviewdatum_geplant" />
                 <ScalarProperty Name="reviewdatum_effektiv" ColumnName="reviewdatum_effektiv" />
                 <ScalarProperty Name="projekt_id" ColumnName="projekt_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="ProjektverwaltungModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -1,4 +1,12 @@
-﻿using System.Web;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="FilterConfig.cs" author="Fabrice Koenig">
+//   Copyright (c) Fabrice Koenig Ltd. All rights reserved.
+// </copyright>
+// <summary>
+//   Class to register filters
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+using System.Web;
 using System.Web.Mvc;
 
 namespace Projektverwaltung

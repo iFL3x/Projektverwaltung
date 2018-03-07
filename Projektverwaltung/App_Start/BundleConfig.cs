@@ -1,4 +1,11 @@
-﻿using System.Web;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="BundleConfig.cs" author="Fabrice Koenig">
+//   Copyright (c) Fabrice Koenig Ltd. All rights reserved.
+// </copyright>
+// <summary>
+//   BundleConfig Class to register bundles for later use
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 using System.Web.Optimization;
 
 namespace Projektverwaltung
@@ -12,7 +19,8 @@ namespace Projektverwaltung
                         "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
+                        "~/Scripts/jquery.validate*",
+                        "~/Scripts/functions.js*"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.

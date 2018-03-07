@@ -1,4 +1,12 @@
-﻿using System;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="RouteConfig.cs" author="Fabrice Koenig">
+//   Copyright (c) Fabrice Koenig Ltd. All rights reserved.
+// </copyright>
+// <summary>
+//   Class to register MapRoutes and Custom Routing
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;

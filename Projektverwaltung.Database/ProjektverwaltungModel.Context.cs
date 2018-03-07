@@ -35,7 +35,6 @@ namespace Projektverwaltung.Database
         public virtual DbSet<MitarbeiterFunktion> MitarbeiterFunktion { get; set; }
         public virtual DbSet<Projekt> Projekt { get; set; }
         public virtual DbSet<ProjektPhase> ProjektPhase { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Vorgehensmodell> Vorgehensmodell { get; set; }
         public virtual DbSet<VorgehensmodellPhase> VorgehensmodellPhase { get; set; }
     }

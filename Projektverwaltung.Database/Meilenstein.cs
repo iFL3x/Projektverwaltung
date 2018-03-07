@@ -17,6 +17,9 @@ namespace Projektverwaltung.Database
         public int id { get; set; }
         public string name { get; set; }
         public int projektphase_id { get; set; }
+        public string beschreibung { get; set; }
+        public Nullable<int> status { get; set; }
+        public Nullable<int> nicht_loeschbar { get; set; }
     
         public virtual ProjektPhase ProjektPhase { get; set; }
     }

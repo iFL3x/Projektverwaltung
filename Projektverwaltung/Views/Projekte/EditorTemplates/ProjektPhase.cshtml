@@ -10,7 +10,7 @@
 <div>
     <div class="form-group">
         <div class="col-md-10">
-            <h4>@Model.name</h4>
+            <h4>@Model.name <small>(@Model.fortschritt% &ndash; @phasenStatusList.Where(s => s.Value == Model.status.ToString()).First().Text)</small></h4>
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#phase_@Model.id"><span class="glyphicon glyphicon-resize-vertical"></span> Show / Hide</button>
         </div>
     </div>
@@ -38,7 +38,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.status, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("status", phasenStatusList, "Status wählen", new { @class = "form-control" })
+                @Html.DropDownList("status", phasenStatusList, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -76,7 +76,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.fortschritt, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.Label("Fortschritt [%]", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.fortschritt, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.fortschritt, "", new { @class = "text-danger" })
@@ -101,9 +101,13 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.dokumente_link, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dokumente_link, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.dokumente_link, new { htmlAttributes = new { @class = "form-control input-file-field" } })
                 @Html.ValidationMessageFor(model => model.dokumente_link, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-1">
+                <input type="file" class="input-file-select" value="" />
+                <button class="btn btn-default input-file-button"><span class="glyphicon glyphicon-plus"></span> Hinzufügen</button>
             </div>
         </div>
 
@@ -114,7 +118,7 @@
                 @Html.ValidationMessageFor(model => model.reviewdatum_geplant, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        
         <div class="form-group">
             @Html.LabelFor(model => model.reviewdatum_effektiv, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -122,9 +126,12 @@
                 @Html.ValidationMessageFor(model => model.reviewdatum_effektiv, "", new { @class = "text-danger" })
             </div>
         </div>
-
-
-        <h4>Aktivitäten</h4>
+        <h3>Aktivitäten</h3>
+        <hr class="abschnitt" />
+        <div id="aktivitaeten">
+            @Html.EditorFor(model => model.Aktivitaet)
+        </div>
+        <br />
         <div class="form-group">
             <div class="col-md-10">
                 <a href="@Url.Action("AddAktivitaet", "Projekte", new { phaseId = Model.id, projektId = Model.projekt_id})" class="btn btn-default">
@@ -132,12 +139,25 @@
                 </a>
             </div>
         </div>
-        <div id="aktivitaeten">
-            @Html.EditorFor(model => model.Aktivitaet)
+
+        <br />
+
+        <h3>Meilensteine</h3>
+        <hr class="abschnitt" />
+        <div id="meilensteine">
+            @Html.EditorFor(model => model.Meilenstein)
+        </div>
+        <br />
+        <div class="form-group">
+            <div class="col-md-10">
+                <a href="@Url.Action("AddMeilenstein", "Projekte", new { phaseId = Model.id, projektId = Model.projekt_id})" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus"></span> Meilenstein hinzufügen
+                </a>
+            </div>
         </div>
     </div>
  </div>
-<hr />
+
 
 @{ 
     phasenStatusList.FirstOrDefault(x => x.Text == "Abgeschlossen").Disabled = true;

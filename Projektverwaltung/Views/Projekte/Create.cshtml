@@ -113,9 +113,13 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.dokument_link, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dokument_link, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.dokument_link, new { htmlAttributes = new { @class = "form-control input-file-field" } })
                 @Html.ValidationMessageFor(model => model.dokument_link, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-1">
+                <input type="file" class="input-file-select" value="" />
+                <button class="btn btn-default input-file-button"><span class="glyphicon glyphicon-plus"></span> Hinzufügen</button>
             </div>
         </div>
 
@@ -128,7 +132,7 @@
 }
 
 <div>
-    @Html.ActionLink("Zurück", "Index")
+    @Html.ActionLink("Zurück zur Übersicht", "Index")
 </div>
 
 @section Scripts {

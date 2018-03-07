@@ -40,7 +40,7 @@
             @prioList.Where(s => s.Value == item.prioritaet.ToString()).FirstOrDefault().Text
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.fortschritt)
+            @Html.DisplayFor(modelItem => item.fortschritt)%
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.id }) |

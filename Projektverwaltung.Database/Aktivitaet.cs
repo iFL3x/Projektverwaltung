@@ -31,15 +31,16 @@ namespace Projektverwaltung.Database
         public Nullable<System.DateTime> enddatum_effektiv { get; set; }
         public Nullable<double> erwartete_kosten { get; set; }
         public Nullable<double> effektive_kosten { get; set; }
-        public int kostenart_id { get; set; }
         public Nullable<double> fortschritt { get; set; }
         public string dokumente_link { get; set; }
+        public Nullable<int> verantwortlicher_id { get; set; }
+        public string abweichungen { get; set; }
     
-        public virtual Kostenart Kostenart { get; set; }
         public virtual ProjektPhase ProjektPhase { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AktivitaetMitarbeiter> AktivitaetMitarbeiter { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Dokument> Dokument { get; set; }
+        public virtual Mitarbeiter Mitarbeiter { get; set; }
     }
 }

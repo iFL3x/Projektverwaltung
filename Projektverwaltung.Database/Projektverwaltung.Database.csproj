@@ -98,9 +98,6 @@
       <DependentUpon>ProjektverwaltungModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="sysdiagrams.cs">
-      <DependentUpon>ProjektverwaltungModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Vorgehensmodell.cs">
       <DependentUpon>ProjektverwaltungModel.tt</DependentUpon>
     </Compile>

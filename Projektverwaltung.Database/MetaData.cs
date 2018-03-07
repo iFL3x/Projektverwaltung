@@ -253,13 +253,69 @@ namespace Projektverwaltung.Database
         [DataType(DataType.Currency)]
         public Nullable<double> effektive_kosten { get; set; }
 
-        [DisplayName("Kostenart")]
-        public int kostenart_id { get; set; }
-
         [DisplayName("Fortschritt")]
         public Nullable<double> fortschritt { get; set; }
 
         [DisplayName("Dokumente")]
         public string dokumente_link { get; set; }
+    }
+
+    [MetadataType(typeof(MeilensteinMetaData))]
+    public partial class Meilenstein
+    {
+    }
+
+    public partial class MeilensteinMetaData
+    {
+        [DisplayName("ID")]
+        public int id { get; set; }
+
+        [DisplayName("Name")]
+        public string name { get; set; }
+
+        [DisplayName("Projektphase")]
+        public int projektphase_id { get; set; }
+
+        [DisplayName("Beschreibung")]
+        [DataType(DataType.MultilineText)]
+        public string beschreibung { get; set; }
+
+        [DisplayName("Status")]
+        public Nullable<int> status { get; set; }
+
+        [DisplayName("Löschschutz")]
+        public Nullable<int> nicht_loeschbar { get; set; }
+    }
+    [MetadataType(typeof(AktivitaetMitarbeiterMetaData))]
+    public partial class AktivitaetMitarbeiter
+    {
+    }
+
+    public partial class AktivitaetMitarbeiterMetaData
+    {
+        [DisplayName("ID")]
+        public int id { get; set; }
+
+        [DisplayName("Aktivität")]
+        public int aktivitaet_id { get; set; }
+
+        [DisplayName("Mitarbeiter")]
+        public int mitarbeiter_id { get; set; }
+
+        [DisplayName("Budgetierte Zeit [h]")]
+        public Nullable<int> budgetierte_zeit { get; set; }
+
+        [DisplayName("Effektive Zeit [h]")]
+        public Nullable<int> effektive_zeit { get; set; }
+
+        [DisplayName("Gründe für Abweichungen")]
+        [DataType(DataType.MultilineText)]
+        public string abweichungsgrund { get; set; }
+
+        [DisplayName("Funktion")]
+        public string funktion { get; set; }
+
+        [DisplayName("Kostenart")]
+        public int kostenart_id { get; set; }
     }
 }

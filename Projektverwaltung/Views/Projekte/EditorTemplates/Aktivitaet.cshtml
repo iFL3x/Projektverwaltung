@@ -1,14 +1,19 @@
 ﻿@model Projektverwaltung.Database.Aktivitaet
+@{
+    var aktivitaetenStatusList = ViewBag.AktivitaetenStatusList as IEnumerable<SelectListItem>;
 
+    //If the activity state is "In Planung" or "Geplant" the user can edit the fields
+    var showPlanungsdaten = (Model.ProjektPhase.Projekt.status < 3);
+}
 
-<div class="aktivitaet">
+<div>
     <div class="form-group">
         <div class="col-md-10">
-            <h4>@Model.name</h4>
-            <button type="button" class="btn btn-warning" data-toggle="collapse" data-target="#aktivitaet_@Model.id"><span class="glyphicon glyphicon-resize-vertical"></span> Show / Hide</button>
+            <h4>@Model.name <small>(@Model.fortschritt% &ndash; @aktivitaetenStatusList.Where(s => s.Value == Model.status.ToString()).First().Text)</small></h4>
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#aktivitaet_@Model.id"><span class="glyphicon glyphicon-resize-vertical"></span> Show / Hide</button>
         </div>
     </div>
-    <div id="aktivitaet_@Model.id" class="collapse">
+    <div id="aktivitaet_@Model.id" class="collapse aktivitaet">
         @Html.HiddenFor(model => model.id)
         @Html.HiddenFor(model => model.projektphase_id)
 
@@ -23,26 +28,38 @@
         <div class="form-group">
             @Html.LabelFor(model => model.status, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("status", ((IEnumerable<SelectListItem>)ViewBag.AktivitaetenStatusList), "Status wählen", new { @class = "form-control" })
+                @Html.DropDownList("status", aktivitaetenStatusList, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.startdatum_geplant, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.startdatum_geplant, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.startdatum_geplant, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        @{
+            //If the activity state is "In Planung" or "Geplant" the user can edit the fields
+            if (showPlanungsdaten)
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.startdatum_geplant, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.startdatum_geplant, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.startdatum_geplant, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.enddatum_geplant, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.enddatum_geplant, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.enddatum_geplant, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.enddatum_geplant, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.enddatum_geplant, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.enddatum_geplant, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+            //Else pass the data as hidden fields
+            else
+            {
+                @Html.HiddenFor(model => model.startdatum_geplant)
+                @Html.HiddenFor(model => model.enddatum_geplant)
+            }
+        }
 
         <div class="form-group">
             @Html.LabelFor(model => model.startdatum_effektiv, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -60,13 +77,24 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.erwartete_kosten, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.erwartete_kosten, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.erwartete_kosten, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        @{
+            //If the activity state is "In Planung" or "Geplant" the user can edit the fields
+            if (showPlanungsdaten)
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.erwartete_kosten, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.erwartete_kosten, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.erwartete_kosten, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+            //Else pass the data as hidden fields
+            else
+            {
+                @Html.HiddenFor(model => model.erwartete_kosten)
+            }
+        }
 
         <div class="form-group">
             @Html.LabelFor(model => model.effektive_kosten, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -76,17 +104,8 @@
             </div>
         </div>
 
-
         <div class="form-group">
-            @Html.LabelFor(model => model.kostenart_id, "Kostenart", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("kostenart_id", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.kostenart_id, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.fortschritt, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.Label("Fortschritt [%]", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.fortschritt, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.fortschritt, "", new { @class = "text-danger" })
@@ -95,9 +114,13 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.dokumente_link, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dokumente_link, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.dokumente_link, new { htmlAttributes = new { @class = "form-control input-file-field" } })
                 @Html.ValidationMessageFor(model => model.dokumente_link, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-1">
+                <input type="file" class="input-file-select" value="" />
+                <button class="btn btn-default input-file-button"><span class="glyphicon glyphicon-plus"></span> Hinzufügen</button>
             </div>
         </div>
 
@@ -114,6 +137,18 @@
                 </div>
             }
         }
-       
+        <h3>Tasks</h3>
+        <hr class="abschnitt" />
+        <div id="tasks">
+            @Html.EditorFor(model => model.AktivitaetMitarbeiter)
+        </div>
+        <br />
+        <div class="form-group">
+            <div class="col-md-10">
+                <a href="@Url.Action("AddTask", "Projekte", new { aktivitaetId = Model.id, projektId = Model.ProjektPhase.projekt_id})" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus"></span> Task hinzufügen
+                </a>
+            </div>
+        </div>
     </div>
 </div>

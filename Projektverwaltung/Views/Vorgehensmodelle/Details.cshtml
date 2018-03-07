@@ -4,10 +4,10 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Vorgehensmodell Details</h2>
+<h2>Vorgehensmodell - Details</h2>
 
 <div>
-    <h4>Vorgehensmodell</h4>
+    <h4>Vorgehensmodell - @Model.id</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -56,6 +56,6 @@
 </table>
 
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Bearbeiten", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Zurück zur Übersicht", "Index")
 </p>

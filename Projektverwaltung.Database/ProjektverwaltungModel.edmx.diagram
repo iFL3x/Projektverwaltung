@@ -4,26 +4,24 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="ed401e3b511d44e49d92934a12abd86d" Name="Diagram1">
-        <EntityTypeShape EntityType="ProjektverwaltungModel.Aktivitaet" Width="1.5" PointX="13.5" PointY="10.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProjektverwaltungModel.AktivitaetMitarbeiter" Width="1.5" PointX="3" PointY="8.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProjektverwaltungModel.Dokument" Width="1.5" PointX="10.5" PointY="10.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProjektverwaltungModel.Funktion" Width="1.5" PointX="0.75" PointY="5.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProjektverwaltungModel.Kostenart" Width="1.5" PointX="11.25" PointY="13.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProjektverwaltungModel.Meilenstein" Width="1.5" PointX="10.5" PointY="17.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProjektverwaltungModel.Mitarbeiter" Width="1.5" PointX="0.75" PointY="8.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProjektverwaltungModel.MitarbeiterFunktion" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProjektverwaltungModel.Projekt" Width="1.5" PointX="6" PointY="7.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProjektverwaltungModel.ProjektPhase" Width="1.5" PointX="8.25" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProjektverwaltungModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProjektverwaltungModel.Vorgehensmodell" Width="1.5" PointX="3.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProjektverwaltungModel.VorgehensmodellPhase" Width="1.5" PointX="6" PointY="12.75" IsExpanded="true" />
-        <AssociationConnector Association="ProjektverwaltungModel.FK_Aktivitaet_Kostenart" ManuallyRouted="false" />
+      <Diagram DiagramId="ed401e3b511d44e49d92934a12abd86d" Name="Diagram1" ZoomLevel="78">
+        <EntityTypeShape EntityType="ProjektverwaltungModel.Aktivitaet" Width="1.5" PointX="10.5" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjektverwaltungModel.AktivitaetMitarbeiter" Width="1.5" PointX="10.5" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjektverwaltungModel.Dokument" Width="1.5" PointX="1.5" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjektverwaltungModel.Funktion" Width="1.5" PointX="1.625" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjektverwaltungModel.Kostenart" Width="1.5" PointX="13.125" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjektverwaltungModel.Meilenstein" Width="1.5" PointX="7.75" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjektverwaltungModel.Mitarbeiter" Width="1.5" PointX="5.625" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjektverwaltungModel.MitarbeiterFunktion" Width="1.5" PointX="3.625" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjektverwaltungModel.Projekt" Width="1.5" PointX="5.625" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjektverwaltungModel.ProjektPhase" Width="1.5" PointX="8.125" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjektverwaltungModel.Vorgehensmodell" Width="1.5" PointX="3.625" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjektverwaltungModel.VorgehensmodellPhase" Width="1.5" PointX="3.625" PointY="9.75" IsExpanded="true" />
         <AssociationConnector Association="ProjektverwaltungModel.FK_Aktivitaet_ProjektPhase" ManuallyRouted="false" />
         <AssociationConnector Association="ProjektverwaltungModel.FK_AktivitaetMitarbeiter_Aktivitaet" ManuallyRouted="false" />
         <AssociationConnector Association="ProjektverwaltungModel.FK_Dokument_Aktivitaet" ManuallyRouted="false" />
         <AssociationConnector Association="ProjektverwaltungModel.FK_AktivitaetMitarbeiter_Mitarbeiter" ManuallyRouted="false" />
-        <AssociationConnector Association="ProjektverwaltungModel.FK_Dokument_Projekt" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjektverwaltungModel.FK_Dokument_Projekt" ManuallyRouted="false" ></AssociationConnector>
         <AssociationConnector Association="ProjektverwaltungModel.FK_Dokument_ProjektPhase" ManuallyRouted="false" />
         <AssociationConnector Association="ProjektverwaltungModel.FK_MitarbeiterFunktion_Funktion" ManuallyRouted="false" />
         <AssociationConnector Association="ProjektverwaltungModel.FK_Meilenstein_Phase" ManuallyRouted="false" />
@@ -32,6 +30,8 @@
         <AssociationConnector Association="ProjektverwaltungModel.FK_Phase_Projekt" ManuallyRouted="false" />
         <AssociationConnector Association="ProjektverwaltungModel.FK_Projekt_Vorgehensmodell" ManuallyRouted="false" />
         <AssociationConnector Association="ProjektverwaltungModel.FK_VorgehensmodellPhase_Vorgehensmodell" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjektverwaltungModel.FK_Aktivitaet_Mitarbeiter" />
+        <AssociationConnector Association="ProjektverwaltungModel.FK_AktivitaetMitarbeiter_Kostenart" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
