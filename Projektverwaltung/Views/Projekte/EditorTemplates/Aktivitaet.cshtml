@@ -1,5 +1,6 @@
 ﻿@model Projektverwaltung.Database.Aktivitaet
 @{
+    //The Activity Sate List passed over ViewData
     var aktivitaetenStatusList = ViewBag.AktivitaetenStatusList as IEnumerable<SelectListItem>;
 
     //If the activity state is "In Planung" or "Geplant" the user can edit the fields
