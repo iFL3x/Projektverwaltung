@@ -2,7 +2,10 @@
 
 @{
     ViewBag.Title = "Details";
+    //Project State passed over ViewData
     var statusList = ViewBag.StatusList as IEnumerable<SelectListItem>;
+
+    //Priority List passed over ViewData
     var prioList = ViewBag.PrioList as IEnumerable<SelectListItem>;
 }
 

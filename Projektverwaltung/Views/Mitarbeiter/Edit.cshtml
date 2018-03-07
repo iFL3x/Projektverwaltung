@@ -58,6 +58,7 @@
 
                 @foreach (var item in allFunctions)
                 {
+                    //Loop through all Functions and add different behaviour depending on checked or not
                     if (Model.Funktionen.Any(x => x.id == item.id))
                     {
                         <div><input type="checkbox" checked onchange="deselectFunctionFromEmployee(@item.id, @Model.Id);"/>&nbsp; @item.name</div>
@@ -90,10 +91,12 @@
     }
 
     <script>
+    //Function used to deselect a Function for an employee, called on "onchange" event
     function deselectFunctionFromEmployee(functionId, employeeId) {
         window.location.href = '@Url.Action("RemoveFunctionFromEmployee", "Mitarbeiter")?functionId=' + functionId + '&employeeId=' + employeeId;
     }
-
+    
+    //Function used to select a Function for an employee, called on "onchange" event
     function selectFunctionFromEmployee(functionId, employeeId) {
         window.location.href = '@Url.Action("AddFunctionToEmployee", "Mitarbeiter")?functionId=' + functionId + ' &employeeId=' + employeeId;
     }
